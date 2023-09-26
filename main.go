@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/sakshamxkaushik/goblog/models"
 	"github.com/sakshamxkaushik/goblog/storage"
@@ -15,11 +16,22 @@ import (
 )
 
 type Blog struct {
-	ID       int    `json:"id"`
+	ID        uint      `gorm:"primaryKey" json:"id"`
+	Title     string    `json:"title"`
+	Content   string    `json:"content"`
+	AuthorID  uint      `json:"author_id"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+type User struct {
+	ID       uint   `gorm:"primaryKey" json:"id"`
 	Username string `json:"username"`
-	Title    string `json:"title"`
-	Content  string `json:"content"`
-	Created  string `json:"created"`
+}
+
+type BlogAuthor struct {
+	BlogID   uint `gorm:"primaryKey" json:"blog_id"`
+	AuthorID uint `gorm:"primaryKey" json:"author_id"`
 }
 
 type Repository struct {
@@ -50,7 +62,7 @@ func (r *Repository) CreateBlog(context *fiber.Ctx) error {
 }
 
 func (r *Repository) DeleteBlog(context *fiber.Ctx) error {
-	blogModel := models.Blogs{}
+	blogModel := models.Blog{}
 	id := context.Params("id")
 	if id == "" {
 		context.Status(http.StatusInternalServerError).JSON(&fiber.Map{
@@ -74,7 +86,7 @@ func (r *Repository) DeleteBlog(context *fiber.Ctx) error {
 }
 
 func (r *Repository) GetBlogs(context *fiber.Ctx) error {
-	blogModels := &[]models.Blogs{}
+	blogModels := &[]models.Blog{}
 
 	err := r.DB.Find(blogModels).Error
 	if err != nil {
@@ -93,7 +105,7 @@ func (r *Repository) GetBlogs(context *fiber.Ctx) error {
 func (r *Repository) GetBlogByID(context *fiber.Ctx) error {
 
 	id := context.Params("id")
-	blogModel := &models.Blogs{}
+	blogModel := &models.Blog{}
 	if id == "" {
 		context.Status(http.StatusInternalServerError).JSON(&fiber.Map{
 			"message": "id cannot be empty",
@@ -122,6 +134,10 @@ func (r *Repository) SetupRoutes(app *fiber.App) {
 	api.Delete("delete_blog/:id", r.DeleteBlog)
 	api.Get("/get_blog/:id", r.GetBlogByID)
 	api.Get("/blog", r.GetBlogs)
+
+	app.Get("/test", func(context *fiber.Ctx) error {
+		return context.SendString("Hello, World!")
+	})
 }
 
 func main() {
