@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,6 +14,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
+
+	openai "github.com/sashabaranov/go-openai"
 )
 
 type Blog struct {
@@ -128,17 +131,40 @@ func (r *Repository) GetBlogByID(context *fiber.Ctx) error {
 	return nil
 }
 
-func (r *Repository) SetupRoutes(app *fiber.App) {
+// added openaiclient
+func (r *Repository) SetupRoutes(app *fiber.App, openaiClient *openai.Client) {
 	api := app.Group("/api")
 	api.Post("/create_blog", r.CreateBlog)
 	api.Delete("delete_blog/:id", r.DeleteBlog)
 	api.Get("/get_blog/:id", r.GetBlogByID)
 	api.Get("/blog", r.GetBlogs)
 
+	api.Post("/create_blog_ai", func(context *fiber.Ctx) error {
+		userInput := context.FormValue("user_input") // Get user's input
+
+		// Generate content using GPT-3.5
+		generatedText, err := generateGPT3_5Response(userInput, openaiClient)
+		if err != nil {
+			return context.Status(http.StatusInternalServerError).JSON(fiber.Map{
+				"error": "Failed to generate content",
+			})
+		}
+
+		// Save the generated content to your PostgreSQL database
+		// ... (your database code)
+
+		return context.Status(http.StatusOK).JSON(fiber.Map{
+			"message":       "Blog content generated and saved successfully",
+			"generatedText": generatedText,
+		})
+	})
+
 	app.Get("/test", func(context *fiber.Ctx) error {
-		return context.SendString("Hello, World!")
+		return context.SendString("WORKINGGGGG!")
 	})
 }
+
+// Open ai route
 
 func main() {
 	err := godotenv.Load(".env")
@@ -164,10 +190,29 @@ func main() {
 		log.Fatal("could not migrate db")
 	}
 
+	openaiClient := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
+
 	r := Repository{
 		DB: db,
 	}
 	app := fiber.New()
-	r.SetupRoutes(app)
+	r.SetupRoutes(app, openaiClient)
+
 	app.Listen(":8080")
+
+}
+
+func generateGPT3_5Response(prompt string, openaiClient *openai.Client) (string, error) {
+	request := openai.CompletionRequest{
+		Model:     openai.GPT3Dot5Turbo,
+		MaxTokens: 100, // Adjust as needed
+		Prompt:    prompt,
+	}
+
+	response, err := openaiClient.CreateCompletion(context.Background(), request)
+	if err != nil {
+		return "", err
+	}
+
+	return response.Choices[0].Text, nil
 }

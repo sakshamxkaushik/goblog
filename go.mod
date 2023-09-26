@@ -5,6 +5,7 @@ go 1.21.1
 require (
 	github.com/gofiber/fiber/v2 v2.49.2
 	github.com/joho/godotenv v1.5.1
+	github.com/sashabaranov/go-openai v1.15.3
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.4
 )
