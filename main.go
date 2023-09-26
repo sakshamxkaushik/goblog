@@ -196,6 +196,8 @@ func main() {
 		DB: db,
 	}
 	app := fiber.New()
+	app.Post("/login", loginHandler)
+	app.Post("/logout", logoutHandler)
 	r.SetupRoutes(app, openaiClient)
 
 	app.Listen(":8080")
