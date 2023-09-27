@@ -1,18 +1,25 @@
 package models
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
 type Blog struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	AuthorID  uint      `json:"author_id"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID      uint   `json:"id" gorm:"primaryKey"`
+	Title   string `json:"title" gorm:"not null;column:title;size:255"`
+	Content string `json:"content"`
+	Post    string `json:"post" gorm:"not null;column:post;size:255"`
+	Image   string `json:"image" gorm:"null;column:image;size:255"`
+}
+
+type User struct {
+	ID       uint   `gorm:"primaryKey" json:"id"`
+	Username string `json:"username"`
+}
+
+type BlogAuthor struct {
+	BlogID   uint `gorm:"primaryKey" json:"blog_id"`
+	AuthorID uint `gorm:"primaryKey" json:"author_id"`
 }
 
 func MigrateBlogs(db *gorm.DB) error {

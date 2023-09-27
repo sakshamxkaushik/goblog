@@ -1,0 +1,31 @@
+.post-container{
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.post-form{
+    width: 50%;
+    border: 1px solid gray;
+    padding: 20px;
+}
+
+.post-form input, .post-form textarea, .post-form button{
+    width: 100%;
+    margin: 10px 0px;
+    padding: 8px;
+
+}
+
+.post-form .post-file{
+    border: 1px solid gray;
+
+}
+
+.post-form button{
+    cursor: pointer;
+    background-color: rgb(3, 161, 3);
+    border-style:groove;
+    color: white;
+
+}

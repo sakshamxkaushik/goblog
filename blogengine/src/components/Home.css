@@ -1,0 +1,42 @@
+.post > img{
+    height: 110px;
+    max-width: 60%;
+}
+
+.post{
+    border: 1px solid gray;
+    margin: 8px 3px;
+    width: 70%;
+    display: flex;
+    padding: 10px 10px;
+
+
+}
+.post:hover{
+    cursor: pointer;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    cursor: default;
+
+}
+
+
+.post-text{
+    padding: 0px 15px;
+}
+
+.home-screen > h1{
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.home-screen > a{
+    text-decoration: none;
+    color: black;
+}
+

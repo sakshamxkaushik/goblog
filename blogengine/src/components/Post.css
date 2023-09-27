@@ -1,0 +1,47 @@
+.post-all{
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+}
+
+.post-all-container{
+    max-width: 70%;
+    border: 1px solid black;
+}
+
+.post-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-content > img{
+    border: 1px solid black;
+    width: 70%;
+}
+.post-content > h2, p{
+    margin: 10px 0px;
+}
+
+.btns {
+    padding: 8px;
+    gap: 0.5rem;
+    display: flex;
+}
+
+.btns > a{
+    border: 0.5px solid black;
+    border-radius: 6px;
+    padding: 3px 5px;
+    text-decoration: none;
+    color: black;
+}
+
+.post-edit{
+    background-color: rgb(40, 185, 204);
+}
+
+.post-del{
+    background-color: rgb(255, 107, 62);
+
+}

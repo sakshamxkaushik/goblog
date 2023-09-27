@@ -1,0 +1,31 @@
+/* App.css */
+
+/* Reset default margin and padding */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Modern background gradient */
+body {
+  background: linear-gradient(to bottom, #3498db, #2c3e50);
+  font-family: 'Open Sans', sans-serif;
+  color: #fff;
+}
+
+/* Center the title */
+h1 {
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  padding: 20px;
+}
+
+/* Style the container */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
